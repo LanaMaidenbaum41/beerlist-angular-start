@@ -12,28 +12,27 @@ app.use(express.static('node_modules'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//middleware error cb function
+function errorCB(res,next){
+  return function(error,beer){
+    if (error) next(error);
+    res.send(beer);
+  }
+};
+
 //get route to retrieve all the beer documents from the beerslist db
 app.get('/beers',function(req,res,next){
-  Beer.find(function(error,beers){
-    if (error) next(error);
-    res.send(beers);
-  });
+  Beer.find(errorCB(res, next));
 });
 
 //post route to add beers to our db
 app.post('/beers', function (req, res, next) {
-  Beer.create(req.body,function(err,beer){
-    if (err) throw err;
-    res.send(beer);
-  });
+  Beer.create(req.body,errorCB(res, next));
 });
 
 //delete route 
 app.delete('/beers/:name',function(req,res,next){  
-  Beer.findOneAndRemove({name:req.params.name},function(err,result){
-    if (err) throw err;
-    res.send(result);
-  });
+  Beer.findOneAndRemove({name:req.params.name},errorCB(res, next));
 });
 
 //rating a beer post route
@@ -43,21 +42,15 @@ app.post('/beers/:id/ratings', function(req, res, next) {
   //$push operator in Mongo appends a specified value to an array
   var updateObject = {$push: {ratings:req.body.rating} }; 
 
-  Beer.findByIdAndUpdate(req.params.id, updateObject, { new: true }, function(err, beer) {
-      if (err) {
-          return next(err);
-      } else {
-          res.send(beer);
-      }
-  });
+  Beer.findByIdAndUpdate(req.params.id, updateObject, { new: true }, errorCB(res, next));
 });
+
 //put route to update a beers name
 app.put('/beers/:id/newname',function(req,res,next){
-  Beer.findByIdAndUpdate(req.params.id, req.body ,{new: true},function(err,beer){
-    if(err) throw err;
-    res.send(beer);
-  });
+  Beer.findByIdAndUpdate(req.params.id, req.body ,{new: true},errorCB(err, beer, next));
 });
+
+
 // main error handler
 // warning - not for use in production code!
 app.use(function(err, req, res, next) {
