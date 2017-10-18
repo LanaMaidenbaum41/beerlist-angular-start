@@ -46,13 +46,6 @@ app.post('/beers/:id/ratings', function (req, res, next) {
   Beer.findByIdAndUpdate(req.params.id, updateObject, { new: true }, errorCB(res, next));
 });
 
-app.post('/beers/:id/reviews', function (req, res, next) { 
-  var newReview = { $push: {reviews:{user:req.body.user,text:req.body.text}} };
-  //can also do { $push: {reviews: req.body} } - thats because body is an object that has the key:value pairs of user:req.body.user & text:req.body.text
-
-  Beer.findByIdAndUpdate(req.params.id, newReview, {new:true}, errorCB(res,next));
-});
-
 //PUT routes (updates to database)
 app.put('/beers/:id/newname', function (req, res, next) {
   Beer.findByIdAndUpdate(req.params.id, req.body, { new: true }, errorCB(err, beer, next));
