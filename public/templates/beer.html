@@ -10,12 +10,22 @@
         <div> ~ {{rating}}</div> 
     </div>
 </div>
-<div ui-view></div>
+<div ng-repeat="review in reviews track by $index">
+    <div class="username">{{review.user}}: 
+        </div>
+        <div class="review">
+           ~Review: {{review.text}}
+        <button type="submit" class="btn btn-sm btn-danger removeReview" ng-click="removeReview(review)"><span class="glyphicon glyphicon-trash"></span></button>
+        
+        </div>
+</div>
 <form>
+    
+    <input type="text" class="form-control reviewUser" placeholder="Username" ng-model="reviewUser">        
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Add a Review...">
+        <input type="text" class="form-control" placeholder="Add a Review..." ng-model="reviewText">
         <span class="input-group-btn">
-                <button class="btn btn-success" type="button">Add Review!</button>
+                <button class="btn btn-success" type="button" ng-click="addReview()">Add Review!</button>
               </span>
     </div>
 </form>

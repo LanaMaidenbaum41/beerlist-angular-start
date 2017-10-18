@@ -43,30 +43,52 @@ app.controller('mainCtrl', ['$scope', 'beersService', function ($scope, beersSer
 
     $scope.removeBeer = function (beer) {
         var param = beer.name;
-        beersService.removeBeer(beer, param)
+        beersService.removeBeer(param)
             .then(function (removeBeer) {
                 for (var i = 0; i < $scope.beers.length; i++) {
                     if ($scope.beers[i]._id == removeBeer._id) {
                         $scope.beers.splice(i, 1);
                     }
                 }
-
-
             })
-
     }
 }]);
 
 app.controller('beersCtrl', ['$scope', '$stateParams', 'beersService', function ($scope, $stateParams, beersService) {
+    $scope.reviews = [];
     if (!$stateParams.beerParam) {
         beersService.getSingleBeer($stateParams.id)
             .then(function (singleBeer) {
-                $scope.beer = singleBeer
-                console.log(singleBeer)
+                $scope.beer = singleBeer;
+                $scope.reviews = singleBeer.reviews
             })
-            
     }
-    else{
+    else {
         $scope.beer = $stateParams.beerParam
+    }
+
+    $scope.addReview = function () {
+        beersService.addReview($scope.reviewUser, $scope.reviewText, $stateParams.id)
+            .then(function (newReview) {
+                $scope.reviews.push(newReview);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+    }
+
+    $scope.removeReview = function (review) {
+        var beerId = $stateParams.id;
+        var reviewId = review._id
+
+        beersService.removeReview(beerId,reviewId)
+            .then(function (removeReview) {
+                for (var i = 0; i < $scope.reviews.length; i++) {
+                    if($scope.reviews[i]._id == removeReview._id){
+                        $scope.reviews.splice(i,1);
+                    }
+                }
+            })
     }
 }])

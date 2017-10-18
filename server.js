@@ -26,7 +26,7 @@ app.get('/beers', function (req, res, next) {
   Beer.find(errorCB(res, next));
 });
 //get a single beer by id
-app.get('/beer/:id', function(req, res, next) {
+app.get('/beer/:id', function (req, res, next) {
   Beer.findById(req.params.id, errorCB(res, next));
 });
 
@@ -35,10 +35,12 @@ app.delete('/beers/:beerName', function (req, res, next) {
   Beer.findOneAndRemove({ name: req.params.beerName }, errorCB(res, next));
 });
 
-app.delete('/beers/:beerName/reviews/:user', function(req,res,next){
-  var deleteReview = { $pull: {reviews:{user:req.params.user}} }
-
-  Beer.findOneAndUpdate({name: req.params.beerName}, deleteReview ,errorCB(res,next));
+app.delete('/beers/:beerId/reviews/:reviewId', function (req, res, next) {
+  // console.log("i got here");
+  var deleteReview = { $pull: { reviews: { _id: req.params.reviewId } } }
+  Beer.findByIdAndUpdate(req.params.beerId , deleteReview, function(beer, next){
+    res.send({ _id: req.params.reviewId })
+  });
 })
 
 //POST routes (adding info to database)
@@ -55,13 +57,15 @@ app.post('/beers/:id/ratings', function (req, res, next) {
   Beer.findByIdAndUpdate(req.params.id, updateObject, { new: true }, errorCB(res, next));
 });
 
-app.post('/beers/:id/reviews', function (req, res, next) { 
-  var newReview = { $push: {reviews:{user:req.body.user,text:req.body.text}} };
+app.post('/beer/:id/reviews', function (req, res, next) {
+  var newReview = { $push: { reviews: { user: req.body.user, text: req.body.text } } };
   console.log(req.body);
   console.log(req.params.id);
   //can also do { $push: {reviews: req.body} } - thats because body is an object that has the key:value pairs of user:req.body.user & text:req.body.text
 
-  Beer.findByIdAndUpdate(req.params.id, newReview, {new:true}, errorCB(res,next));
+  Beer.findByIdAndUpdate(req.params.id, newReview, { new: true }, function (beer, next) {
+    res.send({ user: req.body.user, text: req.body.text });
+  });
 });
 
 //PUT routes (updates to database)
@@ -70,8 +74,8 @@ app.put('/beers/:id/newname', function (req, res, next) {
 });
 
 
-app.all('*', function(req, res) {
-  res.sendFile(__dirname +"/public/index.html")
+app.all('*', function (req, res) {
+  res.sendFile(__dirname + "/public/index.html")
 })
 
 // main error handler

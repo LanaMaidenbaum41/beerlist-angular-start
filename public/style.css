@@ -19,3 +19,13 @@ img{
 .ratings{
     margin: 0 20px;
 }
+
+.reviewUser{
+    width: 50%;
+}
+.username{
+    text-decoration: underline;
+}
+.review{
+    margin:0 20px;
+}
