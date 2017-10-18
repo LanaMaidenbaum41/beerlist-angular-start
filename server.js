@@ -27,10 +27,15 @@ app.get('/beers', function (req, res, next) {
 
 
 //DELETE routes (deleting info from database)
-app.delete('/beers/:name', function (req, res, next) {
-  console.log(req.params.name);
-  Beer.findOneAndRemove({ name: req.params.name }, errorCB(res, next));
+app.delete('/beers/:beerName', function (req, res, next) {
+  Beer.findOneAndRemove({ name: req.params.beerName }, errorCB(res, next));
 });
+
+app.delete('/beers/:beerName/reviews/:user', function(req,res,next){
+  var deleteReview = { $pull: {reviews:{user:req.params.user}} }
+
+  Beer.findOneAndUpdate({name: req.params.beerName}, deleteReview ,errorCB(res,next));
+})
 
 //POST routes (adding info to database)
 app.post('/beers', function (req, res, next) {
@@ -44,6 +49,15 @@ app.post('/beers/:id/ratings', function (req, res, next) {
   var updateObject = { $push: { ratings: req.body.rating } };
 
   Beer.findByIdAndUpdate(req.params.id, updateObject, { new: true }, errorCB(res, next));
+});
+
+app.post('/beers/:id/reviews', function (req, res, next) { 
+  var newReview = { $push: {reviews:{user:req.body.user,text:req.body.text}} };
+  console.log(req.body);
+  console.log(req.params.id);
+  //can also do { $push: {reviews: req.body} } - thats because body is an object that has the key:value pairs of user:req.body.user & text:req.body.text
+
+  Beer.findByIdAndUpdate(req.params.id, newReview, {new:true}, errorCB(res,next));
 });
 
 //PUT routes (updates to database)

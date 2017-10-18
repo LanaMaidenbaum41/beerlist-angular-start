@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-
 //review schema
 var reviewSchema = new mongoose.Schema({
     user: {type: String},
@@ -17,6 +16,5 @@ var beerSchema = new mongoose.Schema({
 });
 
 var Beer = mongoose.model("Beer",beerSchema);
-
 
 module.exports = Beer;
