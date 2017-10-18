@@ -5,21 +5,36 @@
  */
 
 app.service('beersService', function ($http) {
-    //ajax functions to connect with mongo database  
+    //ajax functions to connect with mongo database
+    //POST routes  
     function addBeer(newBeer) {
         return $http.post('/beers', newBeer)
             .then(function (response) {
                 return angular.copy(response.data);
             });
     };
-
-    function removeBeer(beer, param) {
+    function addReview(newUser,newText,beerId) {
+        
+        return $http.post('/beer/'+beerId+'/reviews', {user:newUser, text:newText})
+            .then(function (response) {
+                return angular.copy(response.data);
+            })
+    }
+    //DELETE routes
+    function removeBeer(param) {
         return $http.delete('/beers/' + param)
             .then(function (response) {
                 return angular.copy(response.data);
             });
     };
-
+    function removeReview(beerId,reviewId){
+        return $http.delete('/beers/'+beerId+'/reviews/'+reviewId)
+            .then(function(response){
+                return angular.copy(response.data);
+            });
+        
+    }
+    //GET routes
     function getBeers() {
         return $http.get('/beers')
             .then(function (response) {
@@ -41,7 +56,9 @@ app.service('beersService', function ($http) {
         addBeer: addBeer,
         removeBeer: removeBeer,
         getBeers: getBeers,
-        getSingleBeer:getSingleBeer
+        getSingleBeer: getSingleBeer,
+        addReview:addReview,
+        removeReview:removeReview
     }
 
 });
