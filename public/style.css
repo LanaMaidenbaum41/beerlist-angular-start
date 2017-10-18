@@ -6,7 +6,7 @@ img{
     height:50px;
 }
 
-.input-group{
+.rateDiv{
     margin:15px 5px 0;
     width: 30%;
     
@@ -14,4 +14,8 @@ img{
 .rateButton, .rateInput{
     height:20px;
     padding:0px 5px;
+}
+
+.ratings{
+    margin: 0 20px;
 }

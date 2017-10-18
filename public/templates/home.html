@@ -1,0 +1,33 @@
+<section>
+    <ul ng-repeat="beer in beers track by $index">
+        <li><img ng-src="{{beer.image_url}}"> {{beer.name}} - {{beer.style}}
+            <button type="submit" class="btn btn-sm btn-danger removeBeer" ng-click="removeBeer(beer)"><span class="glyphicon glyphicon-trash"></span></button>
+            <a ui-sref="beer({id: beer._id, beerParam: beer})">Reviews</a>
+            <div class="ratings" ng-repeat="rating in beer.ratings track by $index">
+               <div> ~ {{rating}}</div> 
+            </div>
+            <div class="input-group rateDiv">
+                <input type="text" class="form-control rateInput" placeholder="0-5">
+                <span class="input-group-btn">
+                        <button class="btn btn-secondary rateButton" type="button">rate</button>
+                      </span>
+            </div>
+        </li>
+    </ul>
+</section>
+<form ng-submit="addBeer()">
+    <h3>Add a new beer</h3>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Beer Name" ng-model="name"></input>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Style" ng-model="style"></input>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="ABV" ng-model="abv"></input>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Image URL" ng-model="image"></input>
+    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>

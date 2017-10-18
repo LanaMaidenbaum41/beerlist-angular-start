@@ -1,0 +1,21 @@
+<div class="page-header">
+    <a ui-sref="home">Home</a>
+    <h3>
+        <img ng-src="{{beer.image_url}}"> <span>Beer Name: {{beer.name}}</span>
+    </h3>
+    Beer Type: {{beer.style}}
+    <div>Ratings</div> 
+    <div class="ratings" ng-repeat="rating in beer.ratings track by $index">
+        
+        <div> ~ {{rating}}</div> 
+    </div>
+</div>
+<div ui-view></div>
+<form>
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Add a Review...">
+        <span class="input-group-btn">
+                <button class="btn btn-success" type="button">Add Review!</button>
+              </span>
+    </div>
+</form>

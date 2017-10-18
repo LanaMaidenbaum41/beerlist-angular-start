@@ -13,7 +13,7 @@ app.service('beersService', function ($http) {
             });
     };
 
-    function removeBeer(beer,param) {
+    function removeBeer(beer, param) {
         return $http.delete('/beers/' + param)
             .then(function (response) {
                 return angular.copy(response.data);
@@ -29,10 +29,19 @@ app.service('beersService', function ($http) {
             });
     };
 
+    //get a single beer
+    function getSingleBeer(beerId) {
+        return $http.get('/beer/' + beerId)
+            .then(function (response) {
+                return angular.copy(response.data);
+            })
+    }
+
     return {
         addBeer: addBeer,
         removeBeer: removeBeer,
-        getBeers: getBeers
+        getBeers: getBeers,
+        getSingleBeer:getSingleBeer
     }
 
 });
