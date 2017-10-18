@@ -57,3 +57,16 @@ app.controller('mainCtrl', ['$scope', 'beersService', function ($scope, beersSer
     }
 }]);
 
+app.controller('beersCtrl', ['$scope', '$stateParams', 'beersService', function ($scope, $stateParams, beersService) {
+    if (!$stateParams.beerParam) {
+        beersService.getSingleBeer($stateParams.id)
+            .then(function (singleBeer) {
+                $scope.beer = singleBeer
+                console.log(singleBeer)
+            })
+            
+    }
+    else{
+        $scope.beer = $stateParams.beerParam
+    }
+}])

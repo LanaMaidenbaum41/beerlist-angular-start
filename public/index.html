@@ -1,56 +1,27 @@
 <html>
 
 <head>
-    <link href="bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link type="text/css" href="/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+    <base href='/'>
 </head>
 
-<body ng-app="beerList" ng-controller="mainCtrl">
+<body ng-app="beerList" >
     <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3">
-                <h1 class="text-center">BeerList</h1>
+                <h1 class="text-center" ui-sref="home">BeerList</h1>
                 <div class="page-header">
                 </div>
                 <!-- render beers here -->
-                <section>
-                    <ul ng-repeat="beer in beers track by $index">
-                        <li><img ng-src="{{beer.image_url}}"> {{beer.name}} - {{beer.style}}
-                            <button type="submit" class="btn btn-sm btn-danger removeBeer" ng-click="removeBeer(beer)"><span class="glyphicon glyphicon-trash"></span></button>
-                            <div class="ratings" ng-repeat="rating in beer.ratings track by $index">
-                               <div> ~ {{rating}}</div> 
-                            </div>
-                            <div class="input-group">
-                                <input type="text" class="form-control rateInput" placeholder="0-5">
-                                <span class="input-group-btn">
-                                        <button class="btn btn-secondary rateButton" type="button">rate</button>
-                                      </span>
-                            </div>
-                        </li>
-                    </ul>
-                </section>
-
-                <form ng-submit="addBeer()">
-                    <h3>Add a new beer</h3>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Beer Name" ng-model="name"></input>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Style" ng-model="style"></input>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="ABV" ng-model="abv"></input>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Image URL" ng-model="image"></input>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add</button>
-                </form>
+                <section ui-view></section>
 
             </div>
         </div>
     </div>
     <script src="angular/angular.js"></script>
+    <script src="@uirouter/core/_bundles/ui-router-core.js"></script>
+    <script src="@uirouter/angularjs/release/ui-router-angularjs.js"></script>
     <script src="js/app.js"></script>
     <script src="js/services/beerFactory.js"></script>
     <script src="js/controllers/mainController.js"></script>
