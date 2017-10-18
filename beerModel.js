@@ -1,10 +1,11 @@
 var mongoose = require('mongoose');
-
+//review schema
 var reviewSchema = new mongoose.Schema({
-    user:{type:String},
-    text:{type:String}
+    user: {type: String},
+    text: {type: String}
 })
 
+//beer schema
 var beerSchema = new mongoose.Schema({
     name: {type:String},
     style: {type:String},
