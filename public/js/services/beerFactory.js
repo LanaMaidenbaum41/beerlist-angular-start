@@ -13,9 +13,9 @@ app.service('beersService', function ($http) {
                 return angular.copy(response.data);
             });
     };
-    function addReview(newUser,newText,beerId) {
-        
-        return $http.post('/beer/'+beerId+'/reviews', {user:newUser, text:newText})
+    function addReview(newReview,beerId) {
+        console.log(newReview)
+        return $http.post('/beer/'+beerId+'/reviews', newReview)
             .then(function (response) {
                 return angular.copy(response.data);
             })

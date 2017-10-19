@@ -54,8 +54,12 @@ app.controller('mainCtrl', ['$scope', 'beersService', function ($scope, beersSer
     }
 }]);
 
+var deb;
+
 app.controller('beersCtrl', ['$scope', '$stateParams', 'beersService', function ($scope, $stateParams, beersService) {
     $scope.reviews = [];
+   deb = $stateParams
+
     if (!$stateParams.beerParam) {
         beersService.getSingleBeer($stateParams.id)
             .then(function (singleBeer) {
@@ -65,10 +69,17 @@ app.controller('beersCtrl', ['$scope', '$stateParams', 'beersService', function 
     }
     else {
         $scope.beer = $stateParams.beerParam
+        $scope.reviews = $stateParams.beerParam.reviews
     }
 
     $scope.addReview = function () {
-        beersService.addReview($scope.reviewUser, $scope.reviewText, $stateParams.id)
+        var newReview = {
+            user:$scope.reviewUser,
+            text:$scope.reviewText
+        };
+        $scope.reviewUser = ""
+        $scope.reviewText = ""
+        beersService.addReview(newReview, $stateParams.id)
             .then(function (newReview) {
                 $scope.reviews.push(newReview);
             })
